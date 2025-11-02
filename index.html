@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeCon 2025: EdTech Hackathon</title>
+    
+    <!-- 1. Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 2. Custom Configuration & Styles -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              /* Replaced fonts with Archivo for a strong, blocky look */
+              sans: ['Archivo', 'sans-serif'],
+            },
+            colors: {
+              /* New "EasyA" style palette */
+              'brand-bg': '#0D0D0D',       // Off-black
+              'brand-primary': '#BFFF00',   // Electric Lime
+              'brand-secondary': '#FFFFFF', // White
+              'brand-accent': '#333333',    // Border color (dark grey)
+            },
+            animation: {
+              /* Removed float, added marquee */
+              'marquee': 'marquee 30s linear infinite',
+            },
+            keyframes: {
+              /* Removed float and heroGradient */
+              marquee: {
+                '0%': { transform: 'translateX(0%)' },
+                '100%': { transform: 'translateX(-100%)' },
+              },
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+        /* --- IMPORTED NEW 'Archivo' FONT --- */
+        @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800;900&display=swap');
+        
+        body {
+            background-color: #0D0D0D; /* 'brand-bg' */
+            color: #FFFFFF; /* 'brand-secondary' */
+            font-family: 'Archivo', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* --- Bento Box Style --- */
+        .bento-box {
+            background-color: #111111; /* Slightly lighter than bg */
+            border: 1px solid #333333; /* 'brand-accent' */
+            border-radius: 1rem; /* 16px */
+            padding: 1.5rem; /* 24px */
+            transition: all 0.3s ease;
+        }
+        .bento-box:hover {
+            border-color: #BFFF00; /* 'brand-primary' */
+            transform: scale(1.02);
+        }
+        .bento-box-primary {
+            background-color: #BFFF00; /* 'brand-primary' */
+            color: #0D0D0D; /* 'brand-bg' */
+        }
+
+        /* --- Simplified Scroll-triggered animation --- */
+        /* Removed rotate and scale, just a clean fade-up */
+        .animate-on-scroll {
+            opacity: 0;
+            transition: all 0.7s ease-out;
+            transform: translateY(20px);
+        }
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Schedule Tabs (Reskinned) --- */
+        .tab-btn {
+            transition: all 0.3s ease;
+            color: #888;
+            background-color: transparent;
+            border-radius: 99px;
+            padding: 0.5rem 1rem;
+            font-weight: 700;
+        }
+        .tab-btn.active {
+            color: #0D0D0D; /* 'brand-bg' */
+            background-color: #BFFF00; /* 'brand-primary' */
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* --- FAQ Accordion (Reskinned) --- */
+        .faq-item {
+            border: 1px solid #333333;
+            border-radius: 1rem;
+            overflow: hidden;
+            transition: border-color 0.3s ease;
+        }
+        .faq-item:hover {
+            border-color: #BFFF00;
+        }
+        .faq-question {
+            cursor: pointer;
+            padding: 1.5rem;
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+            border-top: 1px solid #333333;
+        }
+        .faq-answer p {
+            padding: 1.5rem;
+            color: #aaa;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 200px; /* Adjust as needed */
+        }
+        .faq-item.active .faq-arrow {
+            transform: rotate(180deg);
+        }
+        .faq-arrow {
+            transition: transform 0.3s ease;
+        }
+
+        /* --- Marquee (Sponsors) --- */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .marquee-track {
+            display: inline-block;
+            animation: marquee 30s linear infinite;
+        }
+        .marquee-item {
+            display: inline-block;
+            padding: 0 4rem;
+            font-size: 1.5rem; /* 24px */
+            font-weight: 700;
+            color: #888;
+        }
+
+        /* --- Gallery Scroll --- */
+        .gallery-container {
+            overflow-x: auto;
+            white-space: nowrap;
+            /* Simple scrollbar for bento style */
+            scrollbar-width: thin;
+            scrollbar-color: #BFFF00 #333333;
+        }
+        .gallery-item {
+            width: 320px;
+            height: 200px;
+            display: inline-block;
+            margin-right: 1rem;
+            border-radius: 1rem;
+            object-fit: cover;
+            border: 1px solid #333;
+        }
+
+        /* Removed .title, rainbow, etc. */
+
+    </style>
+</head>
+<body class="antialiased">
+    
+    <!-- Wrapper for all content -->
+    <div class="container mx-auto max-w-7xl p-4 md:p-8">
+
+        <!-- ===== Hero Section (Reskinned) ===== -->
+        <section id="hero" class="mb-8">
+            <div class="bento-box grid md:grid-cols-2 gap-8 items-center">
+                <!-- Left: Text Content -->
+                <div class="animate-on-scroll">
+                    <span class="text-brand-primary font-bold text-xl uppercase tracking-widest">
+                        CodeCon 2025
+                    </span>
+                    <h1 class="text-6xl md:text-8xl lg:text-9xl font-black my-4 text-white">
+                        EdTech Hackathon
+                    </h1>
+                    <p class="text-xl md:text-2xl text-gray-400 mb-10">
+                        Build the future of education. Let's innovate, create, and inspire.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#register" class="text-lg text-center font-bold bg-brand-primary text-brand-bg py-4 px-10 rounded-full transition duration-300 ease-in-out hover:scale-105">
+                            Register Now
+                        </a>
+                        <a href="#themes" class="text-lg text-center font-bold bg-brand-accent text-white py-4 px-10 rounded-full transition duration-300 ease-in-out hover:bg-gray-700 hover:scale-105">
+                            View Themes
+                        </a>
+                    </div>
+                </div>
+                <!-- Right: Illustration (Re-styled) -->
+                <div class="relative z-10 hidden md:block animate-on-scroll" style="transition-delay: 100ms;">
+                    <!-- Placeholder for 2D illustration (monochrome) -->
+                    <svg class="w-full h-auto max-w-md mx-auto" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Simple Rocket (Monochrome + Accent) -->
+                        <path fill="#BFFF00" d="M150 70 C 180 70 180 30 150 30 L 140 60 L 110 50 C 130 50 130 90 110 90 L 140 80 L 150 110 C 180 110 180 70 150 70 Z" />
+                        <path fill="#111111" d="M145 70 A 15 15 0 1 0 115 70 A 15 15 0 1 0 145 70 Z" />
+                        <path fill="#BFFF00" d="M130 70 A 5 5 0 1 0 120 70 A 5 5 0 1 0 130 70 Z" />
+                        <path fill="#FFFFFF" d="M120 50 L 110 20 L 100 50 L 80 40 L 100 60 L 90 80 L 120 60 L 140 80 L 130 50 Z" />
+                        
+                        <!-- Simple Globe/Planet (Monochrome) -->
+                        <circle fill="#333333" cx="50" cy="150" r="30" />
+                        <ellipse fill="none" stroke="#FFFFFF" stroke-width="2" cx="50" cy="150" rx="40" ry="10" transform="rotate(-30 50 150)" />
+                        
+                        <!-- Stars -->
+                        <circle fill="#FFFFFF" cx="30" cy="40" r="3" />
+                        <circle fill="#FFFFFF" cx="80" cy="20" r="2" />
+                        <circle fill="#FFFFFF" cx="180" cy="130" r="3" />
+                        <circle fill="#FFFFFF" cx="170" cy="180" r="2" />
+                        <circle fill="#FFFFFF" cx="90" cy="160" r="2" />
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Sponsors Marquee Section ===== -->
+        <section id="sponsors" class="py-8 mb-8 bento-box">
+            <div class="marquee-container">
+                <div class="marquee-track">
+                    <!-- Duplicate items for seamless loop -->
+                    <span class="marquee-item">TechCorp</span>
+                    <span class="marquee-item text-brand-primary">Quantum</span>
+                    <span class="marquee-item">WebWorld</span>
+                    <span class="marquee-item text-brand-primary">AI-Ventures</span>
+                    <span class="marquee-item">GreenLeaf</span>
+                    <span class="marquee-item text-brand-primary">CodeCon</span>
+                    <!-- Duplicates -->
+                    <span class="marquee-item">TechCorp</span>
+                    <span class="marquee-item text-brand-primary">Quantum</span>
+                    <span class="marquee-item">WebWorld</span>
+                    <span class="marquee-item text-brand-primary">AI-Ventures</span>
+                    <span class="marquee-item">GreenLeaf</span>
+                    <span class="marquee-item text-brand-primary">CodeCon</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Bento Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Left Column (Span 2) -->
+            <div class="lg:col-span-2 flex flex-col gap-8">
+                
+                <!-- ===== Themes Section ===== -->
+                <section id="themes" class="animate-on-scroll">
+                    <h2 class="text-4xl font-bold mb-6">This Year's Themes & Challenges</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Theme Card 1 -->
+                        <div class="bento-box text-center">
+                            <div class="text-brand-primary mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m-2 6h-2M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 6c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">AI & The Future</h3>
+                            <p class="text-gray-400 text-sm">Explore generative AI, machine learning, and ethical AI applications.</p>
+                        </div>
+                        <!-- Theme Card 2 -->
+                        <div class="bento-box text-center">
+                            <div class="text-brand-primary mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 002-2v-1a2 2 0 012-2h1.945M10 16a2 2 0 114 0 2 2 0 01-4 0zM12 10V3M4 16h16" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Sustainable Tech</h3>
+                            <p class="text-gray-400 text-sm">Build solutions for green energy, carbon reduction, and preservation.</p>
+                        </div>
+                        <!-- Theme Card 3 -->
+                        <div class="bento-box text-center">
+                            <div class="text-brand-primary mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Power & Energy</h3>
+                            <p class="text-gray-400 text-sm">Innovate in energy storage, decentralized power, and smart consumption.</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- ===== Prizes Section (High-Impact) ===== -->
+                <section id="prizes" class="animate-on-scroll">
+                    <div class="bento-box bento-box-primary text-center">
+                        <h2 class="text-3xl font-bold mb-2 uppercase tracking-wider">Prizes & Awards</h2>
+                        <p class="text-7xl md:text-9xl font-black text-brand-bg">$50,000+</p>
+                    </div>
+                </section>
+
+                <!-- ===== Schedule Section ===== -->
+                <section id="schedule" class="bento-box animate-on-scroll">
+                    <h2 class="text-4xl font-bold text-center mb-8">Event Timeline</h2>
+                    <!-- Tabs -->
+                    <div class="flex justify-center space-x-2 md:space-x-4 mb-8">
+                        <button class="tab-btn text-sm md:text-base active" data-tab="day1">Day 1: Kickoff</button>
+                        <button class="tab-btn text-sm md:text-base" data-tab="day2">Day 2: Hacking</button>
+                        <button class="tab-btn text-sm md:text-base" data-tab="day3">Day 3: Finale</button>
+                    </div>
+                    <!-- Tab Content -->
+                    <div class="text-left text-gray-300">
+                        <!-- Day 1 Content -->
+                        <div id="day1" class="tab-content active">
+                            <ul class="space-y-3 max-w-lg mx-auto">
+                                <li class="bg-brand-bg rounded-lg p-3 text-sm md:text-base flex justify-between"><span>10:00 AM</span> <strong class="text-white">Opening Ceremony & Keynote</strong></li>
+                                <li class="bg-brand-bg rounded-lg p-3 text-sm md:text-base flex justify-between"><span>12:00 PM</span> <strong class="text-white">Hacking Begins!</strong></li>
+                                <li class="bg-brand-bg rounded-lg p-3 text-sm md:text-base flex justify-between"><span>02:00 PM</span> <strong class="text-white">Workshop: AI APIs</strong></li>
+                            </ul>
+                        </div>
+                        <!-- Day 2 Content -->
+                        <div id="day2" class="tab-content">
+                            <ul class="space-y-3 max-w-lg mx-auto">
+                                <li class="bg-brand-bg rounded-lg p-3 text-sm md:text-base flex justify-between"><span>09:00 AM</span> <strong class="text-white">Morning 'Code & Coffee'</strong></li>
+                                <li class="bg-brand-bg rounded-lg p-3 text-sm md:text-base flex justify-between"><span>03:00 PM</span> <strong class="text-white">Project Check-in</strong></li>
+                                <li class="bg-brand-bg rounded-lg p-3 text-sm md:text-base flex justify-between"><span>08:00 PM</span> <strong class="text-white">Midnight Pizza</strong></li>
+                            </ul>
+                        </div>
+                        <!-- Day 3 Content -->
+                        <div id="day3" class="tab-content">
+                            <ul class="space-y-3 max-w-lg mx-auto">
+                                <li class="bg-brand-bg rounded-lg p-3 text-sm md:text-base flex justify-between"><span>10:30 AM</span> <strong class="text-white">Submission Deadline</strong></li>
+                                <li class="bg-brand-bg rounded-lg p-3 text-sm md:text-base flex justify-between"><span>12:00 PM</span> <strong class="text-white">Finalist Demos & Judging</strong></li>
+                                <li class="bg-brand-bg rounded-lg p-3 text-sm md:text-base flex justify-between"><span>04:00 PM</span> <strong class="text-white">Awards Ceremony & Closing</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- ===== Why Participate Section ===== -->
+                <section id="why" class="animate-on-scroll">
+                    <h2 class="text-4xl font-bold mb-6">Why Participate?</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Benefit Card 1 -->
+                        <div class="bento-box">
+                            <h3 class="text-xl font-bold mb-2">Build Your Portfolio</h3>
+                            <p class="text-gray-400 text-sm">Create a real-world project in 48 hours and make your resume stand out.</p>
+                        </div>
+                        <!-- Benefit Card 2 -->
+                        <div class="bento-box">
+                            <h3 class="text-xl font-bold mb-2">Win Big Prizes</h3>
+                            <p class="text-gray-400 text-sm">Compete for over $50,000 in cash, cloud credits, and exclusive hardware.</p>
+                        </div>
+                        <!-- Benefit Card 3 -->
+                        <div class="bento-box">
+                            <h3 class="text-xl font-bold mb-2">Network with Experts</h3>
+                            <p class="text-gray-400 text-sm">Connect with mentors, judges, and recruiters from top-tier tech companies.</p>
+                        </div>
+                        <!-- Benefit Card 4 -->
+                        <div class="bento-box">
+                            <h3 class="text-xl font-bold mb-2">Learn New Skills</h3>
+                            <p class="text-gray-400 text-sm">Access exclusive workshops on AI, Web3, and Quantum Computing for free.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===== Judging Criteria ===== -->
+                <section id="criteria" class="animate-on-scroll">
+                    <h2 class="text-4xl font-bold mb-6">Judging Criteria</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <!-- Criteria Card 1 -->
+                        <div class="bento-box text-center">
+                            <h3 class="text-4xl font-bold text-brand-primary mb-2">40%</h3>
+                            <h4 class="text-lg font-semibold mb-1">Innovation</h4>
+                        </div>
+                        <!-- Criteria Card 2 -->
+                        <div class="bento-box text-center">
+                            <h3 class="text-4xl font-bold text-white mb-2">30%</h3>
+                            <h4 class="text-lg font-semibold mb-1">Execution</h4>
+                        </div>
+                        <!-- Criteria Card 3 -->
+                        <div class="bento-box text-center">
+                            <h3 class="text-4xl font-bold text-white mb-2">20%</h3>
+                            <h4 class="text-lg font-semibold mb-1">Design (UX/UI)</h4>
+                        </div>
+                        <!-- Criteria Card 4 -->
+                        <div class="bento-box text-center">
+                            <h3 class="text-4xl font-bold text-white mb-2">10%</h3>
+                            <h4 class="text-lg font-semibold mb-1">Pitch</h4>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- ===== Gallery Section ===== -->
+                <section id="gallery" class="bento-box animate-on-scroll">
+                    <h2 class="text-4xl font-bold mb-6">From Last Year</h2>
+                    <div class="gallery-container">
+                        <img src="https://placehold.co/400x250/111111/BFFF00?text=Hacking+Day" alt="Gallery Image 1" class="gallery-item">
+                        <img src="https://placehold.co/400x250/BFFF00/111111?text=Pitching" alt="Gallery Image 2" class="gallery-item">
+                        <img src="https://placehold.co/400x250/333333/FFFFFF?text=Winners" alt="Gallery Image 3" class="gallery-item">
+                        <img src="https://placehold.co/400x250/FFFFFF/111111?text=Teamwork" alt="Gallery Image 4" class="gallery-item">
+                        <img src="https://placehold.co/400x250/111111/BFFF00?text=Mentors" alt="Gallery Image 5" class="gallery-item">
+                    </div>
+                </section>
+
+            </div>
+            
+            <!-- Right Column (Span 1) -->
+            <div class="lg:col-span-1 flex flex-col gap-8">
+                
+                <!-- ===== Registration Section ===== -->
+                <section id="register" class="bento-box bento-box-primary text-center animate-on-scroll">
+                    <h2 class="text-4xl font-black mb-4">Join The Forge.</h2>
+                    <p class="text-lg text-brand-bg mb-6">Registration is open! Spots are limited, so sign up today.</p>
+                    <a href="#" class="block w-full text-lg text-center font-bold bg-brand-bg text-white py-4 px-10 rounded-full transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-800">
+                        Register Your Team
+                    </a>
+                </section>
+
+                <!-- ===== Judges & Mentors Section ===== -->
+                <section id="judges" class="bento-box animate-on-scroll">
+                    <h2 class="text-4xl font-bold text-center mb-6">Meet The Experts</h2>
+                    <div class="space-y-4">
+                        <!-- Judge Card 1 -->
+                        <div class="flex items-center gap-4 p-4 bg-brand-bg rounded-lg">
+                            <img src="https://placehold.co/64x64/333333/BFFF00?text=AD" alt="Judge 1" class="w-12 h-12 rounded-full">
+                            <div>
+                                <h3 class="text-lg font-bold">Alex DeLarge</h3>
+                                <p class="text-brand-primary text-sm">Principal Engineer @ TechCorp</p>
+                            </div>
+                        </div>
+                        <!-- Judge Card 2 -->
+                        <div class="flex items-center gap-4 p-4 bg-brand-bg rounded-lg">
+                            <img src="https://placehold.co/64x64/BFFF00/111111?text=JB" alt="Judge 2" class="w-12 h-12 rounded-full">
+                            <div>
+                                <h3 class="text-lg font-bold">Jasmine B.</h3>
+                                <p class="text-brand-primary text-sm">Head of Design @ Quantum</p>
+                            </div>
+                        </div>
+                        <!-- Judge Card 3 -->
+                        <div class="flex items-center gap-4 p-4 bg-brand-bg rounded-lg">
+                            <img src="https://placehold.co/64x64/333333/BFFF00?text=RS" alt="Judge 3" class="w-12 h-12 rounded-full">
+                            <div>
+                                <h3 class="text-lg font-bold">Raj Singh</h3>
+                                <p class="text-brand-primary text-sm">VC @ AI-Ventures</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- ===== Venue Section ===== -->
+                <section id="venue" class="bento-box animate-on-scroll">
+                    <h2 class="text-4xl font-bold mb-6">Join From Anywhere</h2>
+                    <div class="space-y-4">
+                        <!-- On-site -->
+                        <div>
+                            <h3 class="text-2xl font-bold mb-2">On-Site</h3>
+                            <p class="text-gray-400 text-sm mb-2">Global Tech Hub, 123 Innovation Drive, Silicon City</p>
+                            <div class="w-full h-32 rounded-lg bg-brand-bg flex items-center justify-center text-gray-400">
+                                [Map Placeholder]
+                            </div>
+                        </div>
+                        <!-- Virtual -->
+                        <div>
+                            <h3 class="text-2xl font-bold mb-2">Virtual</h3>
+                            <p class="text-gray-400 text-sm mb-2">Participate from anywhere. All workshops streamed live.</p>
+                            <a href="#" class="inline-block bg-brand-accent text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-700 transition-all text-sm">
+                                Join our Discord
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===== FAQ Section ===== -->
+                <section id="faq" class="bento-box animate-on-scroll">
+                    <h2 class="text-4xl font-bold text-center mb-6">FAQs</h2>
+                    <div class="space-y-4">
+                        <!-- FAQ Item 1 -->
+                        <div class="faq-item">
+                            <div class="faq-question flex justify-between items-center">
+                                <h3 class="text-lg font-semibold">What is the team size?</h3>
+                                <svg class="faq-arrow w-5 h-5 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                            </div>
+                            <div class="faq-answer"><p>Teams can be 1-4 people. You can find teammates on our Discord!</p></div>
+                        </div>
+                        <!-- FAQ Item 2 -->
+                        <div class="faq-item">
+                            <div class="faq-question flex justify-between items-center">
+                                <h3 class="text-lg font-semibold">Who can participate?</h3>
+                                <svg class="faq-arrow w-5 h-5 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                            </div>
+                            <div class="faq-answer"><p>Students, recent grads, and professionals are all welcome.</p></div>
+                        </div>
+                        <!-- FAQ Item 3 -->
+                        <div class="faq-item">
+                            <div class="faq-question flex justify-between items-center">
+                                <h3 class="text-lg font-semibold">Is it free?</h3>
+                                <svg class="faq-arrow w-5 h-5 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                            </div>
+                            <div class="faq-answer"><p>Yes! CodeCon 2025 is 100% free for all accepted participants.</p></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div> <!-- End Main Wrapper -->
+
+    <!-- ===== Footer ===== -->
+    <footer class="py-12 px-6 text-center text-gray-500">
+        <div class="container mx-auto">
+            <p>&copy; 2025 CodeCon. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ===== JavaScript Logic ===== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- 1. Schedule Tabs ---
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab');
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    tabContents.forEach(content => {
+                        content.id === tabId ? content.classList.add('active') : content.classList.remove('active');
+                    });
+                });
+            });
+
+            // --- 2. On-Scroll Fade-in Animation ---
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.animate-on-scroll').forEach(target => {
+                observer.observe(target);
+            });
+
+            // --- 3. FAQ Accordion Logic ---
+            document.querySelectorAll('.faq-item').forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    const wasActive = item.classList.contains('active');
+                    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+                    if (!wasActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+
+        });
+    </script>
+
+</body>
+</html>
